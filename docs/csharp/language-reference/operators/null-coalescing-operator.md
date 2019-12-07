@@ -22,24 +22,24 @@ ms.locfileid: "73739656"
 
 如果左操作数的值不为 `null`，则 null 合并运算符 `??` 返回该值；否则，它会计算右操作数并返回其结果。 如果左操作数的计算结果为非 null，则 `??` 运算符不会计算其右操作数。
 
-适用于 C# 8.0 及更高版本，只有在左操作数计算为 `null` 时，null 合并赋值运算符 `??=` 才将其右操作数的值分配给左操作数。 如果左操作数的计算结果为非 null，则 `??=` 运算符不会计算其右操作数。
+在 C# 8.0 及更高版本中，只有在左操作数计算为 `null` 时，null 合并赋值运算符 `??=` 才将其右操作数的值赋值给左操作数。 如果左操作数的计算结果为非 null，则 `??=` 运算符不会计算其右操作数。
 
 [!code-csharp[null-coalescing assignment](~/samples/csharp/language-reference/operators/NullCoalescingOperator.cs#Assignment)]
 
-`??=` 运算符的左操作数必须是变量、[属性](../../programming-guide/classes-and-structs/properties.md)或[索引器](../../programming-guide/indexers/index.md)元素。
+`??=` 运算符的左操作数必须是变量、[属性](../../programming-guide/classes-and-structs/properties.md)、[索引器](../../programming-guide/indexers/index.md)元素。
 
-在 C# 7.3 及更早版本中，`??` 运算符左操作数的类型必须是[引用类型](../keywords/reference-types.md)或[可以为 null 的值类型](../builtin-types/nullable-value-types.md)。 从 C# 8.0 版本开始，该要求替换为以下内容：`??` 和 `??=` 运算符的左操作数的类型一定是可以为 null 的值类型。 特别是从 C# 8.0 开始，可以使用具有无约束类型参数的 null 合并运算符：
+在 C# 7.3 及更早版本中，`??` 运算符左操作数的类型必须是[引用类型](../keywords/reference-types.md)或[可空值类型](../builtin-types/nullable-value-types.md)。 从 C# 8.0 版本开始，该要求替换为以下内容：`??` 和 `??=` 运算符的左操作数的类型必须是可空值类型。 特别是从 C# 8.0 开始，可以使用具有无约束类型参数的 null 合并运算符：
 
 [!code-csharp[unconstrained type parameter](~/samples/csharp/language-reference/operators/NullCoalescingOperator.cs#UnconstrainedType)]
 
-null 合并运算符是右结合运算符。 也就是说，窗体的表达式
+null 合并运算符是右结合运算符。 这样的表达式
 
 ```csharp
 a ?? b ?? c
 d ??= e ??= f
 ```
 
-计算结果为
+会像这样求值
 
 ```csharp
 a ?? (b ?? c)
@@ -50,23 +50,23 @@ d ??= (e ??= f)
 
 `??` 和 `??=` 运算符在以下应用场景中很有用：
 
-- 在包含 [null 条件运算符 ?. 和 ?[]](member-access-operators.md#null-conditional-operators--and-) 的表达式中，当包含 null 条件运算的表达式结果为 `null` 时，可以使用 `??` 运算符来提供替代表达式用于计算：
+- 在包含 [null 条件运算符 ?. 和 ?[]](member-access-operators.md#null-conditional-operators--and-) 的表达式中，当包含 null 条件运算的表达式结果为 `null` 时，可以使用 `??` 运算符来提供替代表达式用于求值：
 
   [!code-csharp-interactive[with null-conditional](~/samples/csharp/language-reference/operators/NullCoalescingOperator.cs#WithNullConditional)]
 
-- 当使用[可以为 null 值类型](../builtin-types/nullable-value-types.md)并且需要提供基础值类型的值时，可以使用 `??` 运算符指定当可以为 null 的类型的值为 `null` 时要提供的值：
+- 当使用[可空值类型](../builtin-types/nullable-value-types.md)并且需要提供基础值类型的值时，可以使用 `??` 运算符指定当可空类型的值为 `null` 时要提供的值：
 
   [!code-csharp-interactive[with nullable types](~/samples/csharp/language-reference/operators/NullCoalescingOperator.cs#WithNullableTypes)]
 
-  如果可以为 null 的类型的值为 `null` 时要使用的值应为基础值类型的默认值，请使用 <xref:System.Nullable%601.GetValueOrDefault?displayProperty=nameWithType> 方法。
+  如果可空类型的值为 `null` 时要使用的值应为基础值类型的默认值，请使用 <xref:System.Nullable%601.GetValueOrDefault?displayProperty=nameWithType> 方法。
 
 - 从 C# 7.0 开始，可以使用 [`throw` 表达式](../keywords/throw.md#the-throw-expression)作为 `??` 运算符的右操作数，以使参数检查代码更简洁：
 
   [!code-csharp[with throw expression](~/samples/csharp/language-reference/operators/NullCoalescingOperator.cs#WithThrowExpression)]
 
-  前面的示例还演示了如何使用 [expression-bodied 成员](../../programming-guide/statements-expressions-operators/expression-bodied-members.md)来定义属性。
+  前面的示例还演示了如何使用 [表达式主体成员](../../programming-guide/statements-expressions-operators/expression-bodied-members.md)来定义属性。
 
-- 从 C# 8.0 开始，可以使用 `??=` 运算符将窗体的代码
+- 从 C# 8.0 开始，可以使用 `??=` 运算符将这样的代码
 
   ```csharp
   if (variable is null)
